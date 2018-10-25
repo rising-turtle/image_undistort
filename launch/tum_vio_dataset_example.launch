@@ -4,12 +4,12 @@
 <arg name="second_camera_name" default="cam1" />
 <arg name="scale" default="1.0" />
 <arg name="process_every_nth_frame" default="1" />
-<!--arg name="stereo_params_camchain" default="/home/z/catkin_ws/src/mav_tools/mav_startup/parameters/mavs/ibis/camchain_p23023.yaml"/-->
 
-<arg name="stereo_params_camchain" default="config/euroc_camchain.yaml"/>
+<arg name="stereo_params_camchain" default="config/tum_vio_camchain.yaml"/>
+<!--arg name="stereo_params_camchain" default="config/tum_vio_omni-radtan-512.yaml"/-->
 
 
-  <node name="stereo_undistort" pkg="image_undistort" type="stereo_undistort_node">
+  <node name="stereo_undistort" pkg="image_undistort" type="stereo_undistort_node" output="screen">
     <param name="input_camera_info_from_ros_params" value = "true"/>
     <param name="first_camera_namespace" value="$(arg first_camera_name)"/>
     <param name="second_camera_namespace" value="$(arg second_camera_name)"/>
@@ -23,6 +23,7 @@
   </node>
 
 <node name="depth_node" pkg="image_undistort" type="depth_node" output="screen">
+    <param name="queue_size" type="int" value="1000"/>
 </node>
 
 

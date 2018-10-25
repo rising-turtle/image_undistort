@@ -238,6 +238,10 @@ void Depth::calcPointCloud(
       }
     }
   }
+  pointcloud->width = pointcloud->points.size(); 
+  pointcloud->height = 1; 
+  freespace_pointcloud->width = freespace_pointcloud->points.size(); 
+  freespace_pointcloud->height = 1;
 }
 
 void Depth::calcDisparityImage(
@@ -450,11 +454,15 @@ void Depth::camerasCallback(
   sensor_msgs::PointCloud2 pointcloud_msg;
   pcl::toROSMsg(pointcloud, pointcloud_msg);
   pointcloud_msg.header = left_image_msg->header;
+  pointcloud_msg.header.frame_id = "map"; 
   pointcloud_pub_.publish(pointcloud_msg);
 
   sensor_msgs::PointCloud2 freespace_pointcloud_msg;
   pcl::toROSMsg(freespace_pointcloud, freespace_pointcloud_msg);
   freespace_pointcloud_msg.header = left_image_msg->header;
+  freespace_pointcloud_msg.header.frame_id = "map"; 
   freespace_pointcloud_pub_.publish(freespace_pointcloud_msg);
+
+  ROS_INFO("depth: publish disparity and point cloud at time = %f point cloud width %d height %d", left_image_msg->header.stamp.toSec(), pointcloud_msg.width, pointcloud_msg.height);
 }
 }
